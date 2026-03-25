@@ -10,11 +10,16 @@ import Sidebar from '@/components/layout/Sidebar';
 import type { ActiveTab } from '@/types';
 
 function AppLayout() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, role } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Reset tab to dashboard when role changes
+  useEffect(() => {
+    setActiveTab('dashboard');
+  }, [role]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);

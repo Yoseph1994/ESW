@@ -98,4 +98,63 @@ export interface AuthResponse {
 }
 
 export type OptionTab = 'sectors' | 'subSectors' | 'broadSegments' | 'creditProductLines' | 'productGroups' | 'subProductLines';
-export type ActiveTab = 'dashboard' | 'employees' | 'options';
+export type ActiveTab = 'dashboard' | 'employees' | 'options' | 'cases' | 'report';
+
+// Monitoring Manager types
+export type CaseStatus = 'NEW' | 'PENDING' | 'COMPLETED';
+export type RiskLevel = 'HIGH' | 'MEDIUM' | 'LOW';
+
+export interface CaseEvaluationCriterion {
+  criterion: string;
+  score: number;
+  maxScore: number;
+  comment: string;
+}
+
+export interface CaseEvaluation {
+  criteria: CaseEvaluationCriterion[];
+  totalScore: number;
+  maxTotalScore: number;
+  verdict: RiskLevel;
+  evaluatedBy: string;
+  evaluatedAt: string;
+  notes: string;
+}
+
+export interface Case {
+  id: string;
+  caseId: string;
+  customerId: string;
+  customerName: string;
+  totalExposure: number;
+  customerSegment: string;
+  economicSector: string;
+  subEconomicSector: string;
+  broadSegment: string;
+  creditProductLine: string;
+  productGroup: string;
+  subProductGroup: string;
+  purpose: string;
+  approveAmount: number;
+  lafNo: string;
+  dateOfApproval: string;
+  limit: number;
+  tenure: string;
+  status: CaseStatus;
+  riskLevel?: RiskLevel;
+  dateSent?: string;
+  dateReturned?: string;
+  evaluation?: CaseEvaluation;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MonitoringDashboardStats {
+  newCases: number;
+  onProgressCases: number;
+  completedCases: number;
+  highRisk: number;
+  mediumRisk: number;
+  lowRisk: number;
+  totalEvaluated: number;
+}

@@ -2,7 +2,8 @@ import axios from 'axios';
 import type {
   Employee, Sector, SubSector, BroadSegment,
   CreditProductLine, ProductGroup, SubProductLine,
-  DashboardStats, LoginCredentials, AuthResponse
+  DashboardStats, LoginCredentials, AuthResponse,
+  Case, MonitoringDashboardStats
 } from '@/types';
 
 const api = axios.create({
@@ -85,6 +86,21 @@ export const subProductLineApi = {
   create: (data: Partial<SubProductLine>) => api.post<SubProductLine>('/sub-product-lines', data),
   update: (id: string, data: Partial<SubProductLine>) => api.put<SubProductLine>(`/sub-product-lines/${id}`, data),
   delete: (id: string) => api.delete(`/sub-product-lines/${id}`),
+};
+
+// Cases (Monitoring Manager)
+export const caseApi = {
+  getAll: () => api.get<Case[]>('/cases'),
+  getById: (id: string) => api.get<Case>(`/cases/${id}`),
+  create: (data: Partial<Case>) => api.post<Case>('/cases', data),
+  update: (id: string, data: Partial<Case>) => api.put<Case>(`/cases/${id}`, data),
+  delete: (id: string) => api.delete(`/cases/${id}`),
+  sendToCRM: (id: string) => api.post(`/cases/${id}/send`),
+};
+
+// Monitoring Dashboard
+export const monitoringDashboardApi = {
+  getStats: () => api.get<MonitoringDashboardStats>('/monitoring/stats'),
 };
 
 export default api;

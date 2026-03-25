@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
-import { Menu, Shield } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -13,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/context/AuthContext';
 import type { UserRole, ActiveTab } from '@/types';
+import cbeIcon from '@/assets/icon-cbe.png';
 
 const ROLES: UserRole[] = ['ADMIN', 'CRM MANAGER', 'CRM OFFICER', 'MONITORING OFFICER'];
 
@@ -25,6 +27,8 @@ const PAGE_TITLES: Record<ActiveTab, string> = {
   dashboard: 'Dashboard',
   employees: 'Employees',
   options: 'Options',
+  cases: 'Cases',
+  report: 'Report',
 };
 
 export default function Header({ activeTab, onToggleSidebar }: HeaderProps) {
@@ -41,8 +45,7 @@ export default function Header({ activeTab, onToggleSidebar }: HeaderProps) {
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed top-0 right-0 left-0 z-40 h-16 glass-card border-b border-white/5"
-      style={{ backdropFilter: 'blur(20px)' }}
+      className="fixed top-0 right-0 left-0 z-40 h-16 bg-white border-b border-purple-100 shadow-sm"
     >
       <div className="flex items-center justify-between h-full px-4 md:px-6">
         {/* Left: Hamburger + Logo */}
@@ -51,17 +54,16 @@ export default function Header({ activeTab, onToggleSidebar }: HeaderProps) {
             variant="ghost"
             size="icon"
             onClick={onToggleSidebar}
-            className="text-teal-400 hover:text-teal-300 hover:bg-teal-500/10"
+            className="text-purple-600 hover:text-purple-500 hover:bg-purple-50"
           >
             <Menu className="h-5 w-5" />
           </Button>
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
-              <Shield className="h-4 w-4 text-white" />
+          <div className="flex items-center gap-4">
+            <img src={cbeIcon} alt="CBE Logo" className="h-14 w-auto object-contain bg-transparent" />
+            <div className="hidden sm:flex flex-col items-center justify-center space-y-2">
+              <span className="text-xl font-bold text-gray-900 leading-tight">Commercial Bank of Ethiopia</span>
+              <span className="text-lg font-bold text-purple-600 leading-tight tracking-wide text-center">Early Warning System</span>
             </div>
-            <span className="text-lg font-bold text-white hidden sm:block">
-              EWS
-            </span>
           </div>
         </div>
 
@@ -70,7 +72,7 @@ export default function Header({ activeTab, onToggleSidebar }: HeaderProps) {
           key={activeTab}
           initial={{ y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="text-lg font-semibold text-white hidden md:block"
+          className="text-lg font-semibold text-gray-800 hidden md:block"
         >
           {PAGE_TITLES[activeTab]}
         </motion.h1>
@@ -78,50 +80,34 @@ export default function Header({ activeTab, onToggleSidebar }: HeaderProps) {
         {/* Right: User profile dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger
-              className="flex items-center gap-3 hover:bg-white/5 px-2 md:px-3 py-2 rounded-md cursor-pointer transition-colors outline-none"
-            >
-              <div className="hidden md:block text-right">
-                <p className="text-sm font-medium text-white leading-none">
-                  {userName}
-                </p>
-                <Badge
-                  variant="outline"
-                  className="mt-1 text-[10px] border-teal-500/50 text-teal-400"
-                >
-                  {role}
-                </Badge>
-              </div>
-              <Avatar className="h-9 w-9 border-2 border-teal-500/30">
-                <AvatarFallback className="bg-gradient-to-br from-teal-500 to-teal-700 text-white text-xs font-bold">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
+            className="flex items-center gap-3 hover:bg-purple-50 px-2 md:px-3 py-2 rounded-md cursor-pointer transition-colors outline-none"
+          >
+            <div className="hidden md:block text-right">
+              <p className="text-sm font-medium text-gray-800 leading-none">
+                {userName}
+              </p>
+              <Badge
+                variant="outline"
+                className="mt-1 text-[10px] border-purple-300 text-purple-600"
+              >
+                {role}
+              </Badge>
+            </div>
+            <Avatar className="h-9 w-9 border-2 border-purple-300">
+              <AvatarFallback className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white text-xs font-bold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="w-56 glass-card border-white/10 text-white"
+            className="w-56 bg-white border-purple-100 text-gray-800"
           >
-            <DropdownMenuLabel className="text-sm text-teal-400">
-              {userName}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-white/10" />
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Switch Role (Dev)
-            </DropdownMenuLabel>
-            {ROLES.map((r) => (
-              <DropdownMenuItem
-                key={r}
-                onClick={() => switchRole(r)}
-                className={`cursor-pointer text-sm ${
-                  r === role
-                    ? 'text-teal-400 bg-teal-500/10'
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {r === role && '✓ '}
-                {r}
-              </DropdownMenuItem>
-            ))}
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="text-sm text-purple-600">
+                {userName}
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

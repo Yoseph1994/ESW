@@ -59,25 +59,25 @@ export function DataTable<TData, TValue>({
           placeholder={searchPlaceholder}
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          className="pl-9 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-teal-500/50"
+          className="pl-9 bg-white border-gray-200 text-gray-800 placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20"
         />
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-white/10 overflow-hidden">
+      <div className="rounded-xl border border-gray-200 overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-white/5 hover:bg-transparent">
+              <TableRow key={headerGroup.id} className="border-gray-200 hover:bg-transparent bg-purple-50/50">
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="text-teal-400/80 font-semibold text-xs uppercase tracking-wider bg-white/[0.02]"
+                    className="text-purple-700 font-semibold text-xs uppercase tracking-wider"
                   >
                     {header.isPlaceholder ? null : (
                       <div
                         className={`flex items-center gap-1 ${
-                          header.column.getCanSort() ? 'cursor-pointer select-none hover:text-teal-300' : ''
+                          header.column.getCanSort() ? 'cursor-pointer select-none hover:text-purple-500' : ''
                         }`}
                         onClick={header.column.getToggleSortingHandler()}
                       >
@@ -95,10 +95,10 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="border-white/5 hover:bg-white/[0.03] transition-colors"
+                  className="border-gray-100 hover:bg-purple-50/30 transition-colors"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-gray-300 text-sm">
+                    <TableCell key={cell.id} className="text-gray-700 text-sm">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center text-gray-500">
+                <TableCell colSpan={columns.length} className="h-24 text-center text-gray-400">
                   No results found.
                 </TableCell>
               </TableRow>
@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
             size="icon"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8 text-gray-400 hover:text-white"
+            className="h-8 w-8 text-gray-500 hover:text-purple-600"
           >
             <ChevronsLeft className="h-4 w-4" />
           </Button>
@@ -135,11 +135,11 @@ export function DataTable<TData, TValue>({
             size="icon"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8 text-gray-400 hover:text-white"
+            className="h-8 w-8 text-gray-500 hover:text-purple-600"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm text-gray-400 px-3">
+          <span className="text-sm text-gray-500 px-3">
             {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </span>
           <Button
@@ -147,7 +147,7 @@ export function DataTable<TData, TValue>({
             size="icon"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="h-8 w-8 text-gray-400 hover:text-white"
+            className="h-8 w-8 text-gray-500 hover:text-purple-600"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -156,7 +156,7 @@ export function DataTable<TData, TValue>({
             size="icon"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
-            className="h-8 w-8 text-gray-400 hover:text-white"
+            className="h-8 w-8 text-gray-500 hover:text-purple-600"
           >
             <ChevronsRight className="h-4 w-4" />
           </Button>

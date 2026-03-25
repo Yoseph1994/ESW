@@ -44,8 +44,8 @@ export default function CreditProductLineManager() {
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   useEffect(() => {
-    creditProductLineApi.getAll().then((r) => setItems(r.data)).catch(() => {});
-    broadSegmentApi.getAll().then((r) => setParents(r.data)).catch(() => {});
+    creditProductLineApi.getAll().then((r) => setItems(r.data)).catch(() => { });
+    broadSegmentApi.getAll().then((r) => setParents(r.data)).catch(() => { });
   }, []);
 
   const openCreate = () => { setEditing(null); reset({ name: '', broadSegmentId: '' }); setModalOpen(true); };
@@ -53,7 +53,7 @@ export default function CreditProductLineManager() {
 
   const onSubmit = async (data: FormData) => {
     if (editing) {
-      try { await creditProductLineApi.update(editing.id, data); } catch {}
+      try { await creditProductLineApi.update(editing.id, data); } catch { }
       setItems((p) => p.map((i) => i.id === editing.id ? { ...i, ...data, updatedAt: new Date().toISOString() } : i));
       toast.success('Credit Product Line updated');
     } else {
@@ -66,7 +66,7 @@ export default function CreditProductLineManager() {
   };
 
   const handleDelete = async (item: CreditProductLine) => {
-    try { await creditProductLineApi.delete(item.id); } catch {}
+    try { await creditProductLineApi.delete(item.id); } catch { }
     setItems((p) => p.filter((i) => i.id !== item.id));
     toast.success('Credit Product Line deleted');
   };
@@ -74,13 +74,13 @@ export default function CreditProductLineManager() {
   const getParentName = (id: string) => parents.find((p) => p.id === id)?.name || id;
 
   const columns: ColumnDef<CreditProductLine>[] = [
-    { accessorKey: 'name', header: 'Name', cell: ({ row }) => <span className="font-medium text-white">{row.original.name}</span> },
-    { accessorKey: 'broadSegmentId', header: 'Broad Segment', cell: ({ row }) => <span className="text-teal-400">{getParentName(row.original.broadSegmentId)}</span> },
+    { accessorKey: 'name', header: 'Name', cell: ({ row }) => <span className="font-medium text-gray-900">{row.original.name}</span> },
+    { accessorKey: 'broadSegmentId', header: 'Broad Segment', cell: ({ row }) => <span className="text-purple-600">{getParentName(row.original.broadSegmentId)}</span> },
     ...(isAdmin ? [{
       id: 'actions', header: 'Actions',
       cell: ({ row }: any) => (
         <div className="flex gap-1">
-          <Button variant="ghost" size="icon" onClick={() => openEdit(row.original)} className="h-8 w-8 text-gray-400 hover:text-teal-400"><Pencil className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => openEdit(row.original)} className="h-8 w-8 text-gray-400 hover:text-purple-600"><Pencil className="h-4 w-4" /></Button>
           <Button variant="ghost" size="icon" onClick={() => handleDelete(row.original)} className="h-8 w-8 text-gray-400 hover:text-red-400"><Trash2 className="h-4 w-4" /></Button>
         </div>
       ),
@@ -88,32 +88,32 @@ export default function CreditProductLineManager() {
   ];
 
   return (
-    <Card className="glass-card border-white/5">
+    <Card className="glass-card">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-white flex items-center gap-2"><CreditCard className="h-5 w-5 text-teal-400" />Credit Product Lines</CardTitle>
-        {isAdmin && <Button onClick={openCreate} className="bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg shadow-teal-500/20"><Plus className="h-4 w-4 mr-2" />Create New</Button>}
+        <CardTitle className="text-gray-900 flex items-center gap-2"><CreditCard className="h-5 w-5 text-purple-600" />Credit Product Lines</CardTitle>
+        {isAdmin && <Button onClick={openCreate} className="bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-500/20"><Plus className="h-4 w-4 mr-2" />Create New</Button>}
       </CardHeader>
       <CardContent><DataTable columns={columns} data={items} searchPlaceholder="Search credit product lines..." /></CardContent>
       <FormModal open={modalOpen} onOpenChange={setModalOpen} title={editing ? 'Edit Credit Product Line' : 'Create Credit Product Line'}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-gray-300">Name</Label>
-            <Input {...register('name')} className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-gray-700">Name</Label>
+            <Input {...register('name')} className="bg-white border-gray-200 text-gray-800" />
             {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
           </div>
           <div className="space-y-2">
-            <Label className="text-gray-300">Broad Segment</Label>
+            <Label className="text-gray-700">Broad Segment</Label>
             <Select value={watch('broadSegmentId')} onValueChange={(v) => setValue('broadSegmentId', v)}>
-              <SelectTrigger className="bg-white/5 border-white/10 text-white"><SelectValue placeholder="Select broad segment" /></SelectTrigger>
-              <SelectContent className="bg-navy-800 border-white/10 text-white">
+              <SelectTrigger className="bg-white border-gray-200 text-gray-800"><SelectValue placeholder="Select broad segment" /></SelectTrigger>
+              <SelectContent className="bg-white border-gray-200 text-gray-800">
                 {parents.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
               </SelectContent>
             </Select>
             {errors.broadSegmentId && <p className="text-xs text-red-400">{errors.broadSegmentId.message}</p>}
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="ghost" onClick={() => setModalOpen(false)} className="text-gray-400">Cancel</Button>
-            <Button type="submit" className="bg-gradient-to-r from-teal-500 to-teal-600 text-white">{editing ? 'Update' : 'Create'}</Button>
+            <Button type="button" variant="ghost" onClick={() => setModalOpen(false)} className="text-gray-500">Cancel</Button>
+            <Button type="submit" className="bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white">{editing ? 'Update' : 'Create'}</Button>
           </div>
         </form>
       </FormModal>

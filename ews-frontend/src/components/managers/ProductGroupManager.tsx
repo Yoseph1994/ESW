@@ -74,13 +74,13 @@ export default function ProductGroupManager() {
   const getParentName = (id: string) => parents.find((p) => p.id === id)?.name || id;
 
   const columns: ColumnDef<ProductGroup>[] = [
-    { accessorKey: 'name', header: 'Name', cell: ({ row }) => <span className="font-medium text-white">{row.original.name}</span> },
-    { accessorKey: 'creditProductLineId', header: 'Credit Product Line', cell: ({ row }) => <span className="text-teal-400">{getParentName(row.original.creditProductLineId)}</span> },
+    { accessorKey: 'name', header: 'Name', cell: ({ row }) => <span className="font-medium text-gray-900">{row.original.name}</span> },
+    { accessorKey: 'creditProductLineId', header: 'Credit Product Line', cell: ({ row }) => <span className="text-purple-600">{getParentName(row.original.creditProductLineId)}</span> },
     ...(isAdmin ? [{
       id: 'actions', header: 'Actions',
       cell: ({ row }: any) => (
         <div className="flex gap-1">
-          <Button variant="ghost" size="icon" onClick={() => openEdit(row.original)} className="h-8 w-8 text-gray-400 hover:text-teal-400"><Pencil className="h-4 w-4" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => openEdit(row.original)} className="h-8 w-8 text-gray-400 hover:text-purple-600"><Pencil className="h-4 w-4" /></Button>
           <Button variant="ghost" size="icon" onClick={() => handleDelete(row.original)} className="h-8 w-8 text-gray-400 hover:text-red-400"><Trash2 className="h-4 w-4" /></Button>
         </div>
       ),
@@ -88,32 +88,32 @@ export default function ProductGroupManager() {
   ];
 
   return (
-    <Card className="glass-card border-white/5">
+    <Card className="glass-card">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-white flex items-center gap-2"><Package className="h-5 w-5 text-teal-400" />Product Groups</CardTitle>
-        {isAdmin && <Button onClick={openCreate} className="bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg shadow-teal-500/20"><Plus className="h-4 w-4 mr-2" />Create New</Button>}
+        <CardTitle className="text-gray-900 flex items-center gap-2"><Package className="h-5 w-5 text-purple-600" />Product Groups</CardTitle>
+        {isAdmin && <Button onClick={openCreate} className="bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-lg shadow-purple-500/20"><Plus className="h-4 w-4 mr-2" />Create New</Button>}
       </CardHeader>
       <CardContent><DataTable columns={columns} data={items} searchPlaceholder="Search product groups..." /></CardContent>
       <FormModal open={modalOpen} onOpenChange={setModalOpen} title={editing ? 'Edit Product Group' : 'Create Product Group'}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-gray-300">Name</Label>
-            <Input {...register('name')} className="bg-white/5 border-white/10 text-white" />
+            <Label className="text-gray-700">Name</Label>
+            <Input {...register('name')} className="bg-white border-gray-200 text-gray-800" />
             {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
           </div>
           <div className="space-y-2">
-            <Label className="text-gray-300">Credit Product Line</Label>
+            <Label className="text-gray-700">Credit Product Line</Label>
             <Select value={watch('creditProductLineId')} onValueChange={(v) => setValue('creditProductLineId', v)}>
-              <SelectTrigger className="bg-white/5 border-white/10 text-white"><SelectValue placeholder="Select credit product line" /></SelectTrigger>
-              <SelectContent className="bg-navy-800 border-white/10 text-white">
+              <SelectTrigger className="bg-white border-gray-200 text-gray-800"><SelectValue placeholder="Select credit product line" /></SelectTrigger>
+              <SelectContent className="bg-white border-gray-200 text-gray-800">
                 {parents.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
               </SelectContent>
             </Select>
             {errors.creditProductLineId && <p className="text-xs text-red-400">{errors.creditProductLineId.message}</p>}
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="ghost" onClick={() => setModalOpen(false)} className="text-gray-400">Cancel</Button>
-            <Button type="submit" className="bg-gradient-to-r from-teal-500 to-teal-600 text-white">{editing ? 'Update' : 'Create'}</Button>
+            <Button type="button" variant="ghost" onClick={() => setModalOpen(false)} className="text-gray-500">Cancel</Button>
+            <Button type="submit" className="bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white">{editing ? 'Update' : 'Create'}</Button>
           </div>
         </form>
       </FormModal>

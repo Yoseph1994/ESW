@@ -122,7 +122,7 @@ export default function EmployeesContent() {
       if (editing) {
         try {
           await employeeApi.update(editing.id, data);
-        } catch {}
+        } catch { }
         setEmployees((prev) =>
           prev.map((e) => e.id === editing.id ? { ...e, ...data, updatedAt: new Date().toISOString() } : e)
         );
@@ -149,7 +149,7 @@ export default function EmployeesContent() {
   const handleDelete = async (emp: Employee) => {
     try {
       await employeeApi.delete(emp.id);
-    } catch {}
+    } catch { }
     setEmployees((prev) => prev.filter((e) => e.id !== emp.id));
     toast.success('Employee deleted');
   };
@@ -164,10 +164,10 @@ export default function EmployeesContent() {
       header: 'Name',
       cell: ({ row }) => (
         <div>
-          <p className="font-medium text-white">
+          <p className="font-medium text-gray-900">
             {row.original.firstName} {row.original.lastName}
           </p>
-          <p className="text-xs text-gray-500">{row.original.email}</p>
+          <p className="text-xs text-gray-400">{row.original.email}</p>
         </div>
       ),
     },
@@ -176,7 +176,7 @@ export default function EmployeesContent() {
       accessorKey: 'role',
       header: 'Role',
       cell: ({ row }) => (
-        <Badge variant="outline" className="text-teal-400 border-teal-500/30 text-xs">
+        <Badge variant="outline" className="text-purple-600 border-purple-300 text-xs">
           {row.original.role}
         </Badge>
       ),
@@ -188,11 +188,10 @@ export default function EmployeesContent() {
       header: 'Status',
       cell: ({ row }) => (
         <Badge
-          className={`text-xs ${
-            row.original.status === 'ACTIVE'
-              ? 'bg-teal-500/15 text-teal-400 border-teal-500/30'
-              : 'bg-red-500/15 text-red-400 border-red-500/30'
-          }`}
+          className={`text-xs ${row.original.status === 'ACTIVE'
+              ? 'bg-purple-50 text-purple-600 border-purple-200'
+              : 'bg-red-50 text-red-600 border-red-200'
+            }`}
           variant="outline"
         >
           {row.original.status}
@@ -201,48 +200,48 @@ export default function EmployeesContent() {
     },
     ...(isAdmin
       ? [
-          {
-            id: 'actions',
-            header: 'Actions',
-            cell: ({ row }: any) => (
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => openEdit(row.original)}
-                  className="h-8 w-8 text-gray-400 hover:text-teal-400"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleDelete(row.original)}
-                  className="h-8 w-8 text-gray-400 hover:text-red-400"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            ),
-          } as ColumnDef<Employee>,
-        ]
+        {
+          id: 'actions',
+          header: 'Actions',
+          cell: ({ row }: any) => (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => openEdit(row.original)}
+                className="h-8 w-8 text-gray-400 hover:text-purple-600"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleDelete(row.original)}
+                className="h-8 w-8 text-gray-400 hover:text-red-500"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ),
+        } as ColumnDef<Employee>,
+      ]
       : []),
   ];
 
   return (
     <div>
-      <Card className="glass-card border-white/5">
+      <Card className="glass-card">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-white flex items-center gap-2">
-            <UserPlus className="h-5 w-5 text-teal-400" />
+          <CardTitle className="text-gray-900 flex items-center gap-2">
+            <UserPlus className="h-5 w-5 text-purple-600" />
             Employees
           </CardTitle>
           <div className="flex items-center gap-3">
             <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[180px] bg-white/5 border-white/10 text-white">
+              <SelectTrigger className="w-[180px] bg-white border-gray-200 text-gray-800">
                 <SelectValue placeholder="Filter by role" />
               </SelectTrigger>
-              <SelectContent className="bg-navy-800 border-white/10 text-white">
+              <SelectContent className="bg-white border-gray-200 text-gray-800">
                 <SelectItem value="all">All Roles</SelectItem>
                 {ROLES.map((r) => (
                   <SelectItem key={r} value={r}>{r}</SelectItem>
@@ -252,7 +251,7 @@ export default function EmployeesContent() {
             {isAdmin && (
               <Button
                 onClick={openCreate}
-                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white shadow-lg shadow-teal-500/20"
+                className="bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-400 hover:to-fuchsia-500 text-white shadow-lg shadow-purple-500/20"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Add Employee
@@ -279,37 +278,37 @@ export default function EmployeesContent() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-gray-300">First Name</Label>
-              <Input {...register('firstName')} className="bg-white/5 border-white/10 text-white" />
-              {errors.firstName && <p className="text-xs text-red-400">{errors.firstName.message}</p>}
+              <Label className="text-gray-700">First Name</Label>
+              <Input {...register('firstName')} className="bg-white border-gray-200 text-gray-800" />
+              {errors.firstName && <p className="text-xs text-red-500">{errors.firstName.message}</p>}
             </div>
             <div className="space-y-2">
-              <Label className="text-gray-300">Last Name</Label>
-              <Input {...register('lastName')} className="bg-white/5 border-white/10 text-white" />
-              {errors.lastName && <p className="text-xs text-red-400">{errors.lastName.message}</p>}
+              <Label className="text-gray-700">Last Name</Label>
+              <Input {...register('lastName')} className="bg-white border-gray-200 text-gray-800" />
+              {errors.lastName && <p className="text-xs text-red-500">{errors.lastName.message}</p>}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">Email</Label>
-            <Input type="email" {...register('email')} className="bg-white/5 border-white/10 text-white" />
-            {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
+            <Label className="text-gray-700">Email</Label>
+            <Input type="email" {...register('email')} className="bg-white border-gray-200 text-gray-800" />
+            {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">Phone</Label>
-            <Input {...register('phone')} placeholder="+251911223344" className="bg-white/5 border-white/10 text-white" />
-            {errors.phone && <p className="text-xs text-red-400">{errors.phone.message}</p>}
+            <Label className="text-gray-700">Phone</Label>
+            <Input {...register('phone')} placeholder="+251911223344" className="bg-white border-gray-200 text-gray-800" />
+            {errors.phone && <p className="text-xs text-red-500">{errors.phone.message}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-gray-300">Role</Label>
+              <Label className="text-gray-700">Role</Label>
               <Select value={watch('role')} onValueChange={(v) => setValue('role', v as UserRole)}>
-                <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-navy-800 border-white/10 text-white">
+                <SelectContent className="bg-white border-gray-200 text-gray-800">
                   {ROLES.map((r) => (
                     <SelectItem key={r} value={r}>{r}</SelectItem>
                   ))}
@@ -317,12 +316,12 @@ export default function EmployeesContent() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-gray-300">Status</Label>
+              <Label className="text-gray-700">Status</Label>
               <Select value={watch('status')} onValueChange={(v) => setValue('status', v as 'ACTIVE' | 'INACTIVE')}>
-                <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-navy-800 border-white/10 text-white">
+                <SelectContent className="bg-white border-gray-200 text-gray-800">
                   <SelectItem value="ACTIVE">Active</SelectItem>
                   <SelectItem value="INACTIVE">Inactive</SelectItem>
                 </SelectContent>
@@ -331,31 +330,31 @@ export default function EmployeesContent() {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">District</Label>
+            <Label className="text-gray-700">District</Label>
             <Select value={watch('district')} onValueChange={(v) => setValue('district', v)}>
-              <SelectTrigger className="bg-white/5 border-white/10 text-white">
+              <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                 <SelectValue placeholder="Select district" />
               </SelectTrigger>
-              <SelectContent className="bg-navy-800 border-white/10 text-white max-h-60">
+              <SelectContent className="bg-white border-gray-200 text-gray-800 max-h-60">
                 {DISTRICTS.map((d) => (
                   <SelectItem key={d} value={d}>{d}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {errors.district && <p className="text-xs text-red-400">{errors.district.message}</p>}
+            {errors.district && <p className="text-xs text-red-500">{errors.district.message}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label className="text-gray-300">Branch</Label>
-            <Input {...register('branch')} className="bg-white/5 border-white/10 text-white" />
-            {errors.branch && <p className="text-xs text-red-400">{errors.branch.message}</p>}
+            <Label className="text-gray-700">Branch</Label>
+            <Input {...register('branch')} className="bg-white border-gray-200 text-gray-800" />
+            {errors.branch && <p className="text-xs text-red-500">{errors.branch.message}</p>}
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="ghost" onClick={() => setModalOpen(false)} className="text-gray-400">
+            <Button type="button" variant="ghost" onClick={() => setModalOpen(false)} className="text-gray-500">
               Cancel
             </Button>
-            <Button type="submit" className="bg-gradient-to-r from-teal-500 to-teal-600 text-white">
+            <Button type="submit" className="bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white">
               {editing ? 'Update' : 'Create'}
             </Button>
           </div>

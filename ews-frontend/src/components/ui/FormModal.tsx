@@ -25,13 +25,13 @@ export function FormModal({
 }: FormModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="glass-card border-white/10 text-white sm:max-w-[500px]">
+      <DialogContent className="bg-white border-purple-100 text-gray-800 sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-white">
+          <DialogTitle className="text-xl font-semibold text-gray-900">
             {title}
           </DialogTitle>
           {description && (
-            <DialogDescription className="text-gray-400 text-sm">
+            <DialogDescription className="text-gray-500 text-sm">
               {description}
             </DialogDescription>
           )}

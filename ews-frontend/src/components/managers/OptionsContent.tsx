@@ -64,7 +64,7 @@ export default function OptionsContent({ activeSubTab, onSubTabChange }: Options
           <Button
             variant="ghost"
             onClick={() => onSubTabChange(null)}
-            className="mb-4 text-teal-400 hover:text-teal-300 hover:bg-teal-500/10"
+            className="mb-4 text-purple-600 hover:text-purple-500 hover:bg-purple-50"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Options
@@ -77,10 +77,10 @@ export default function OptionsContent({ activeSubTab, onSubTabChange }: Options
 
   return (
     <div>
-      <Card className="glass-card border-white/5 mb-6">
+      <Card className="glass-card mb-6">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Settings className="h-5 w-5 text-teal-400" />
+          <CardTitle className="text-gray-900 flex items-center gap-2">
+            <Settings className="h-5 w-5 text-purple-600" />
             Options
           </CardTitle>
         </CardHeader>
@@ -97,17 +97,19 @@ export default function OptionsContent({ activeSubTab, onSubTabChange }: Options
           return (
             <motion.div key={card.id} variants={itemVariants}>
               <Card
-                className="glass-card glass-card-hover border-white/5 cursor-pointer group transition-all duration-300 hover:scale-[1.03]"
+                className="glass-card glass-card-hover cursor-pointer group transition-all duration-300 hover:scale-[1.03] overflow-hidden"
                 onClick={() => onSubTabChange(card.id)}
               >
+                {/* Gradient top border like CBE services cards */}
+                <div className="h-1 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-pink-500" />
                 <CardContent className="p-6">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-teal-500/20 to-teal-600/20 flex items-center justify-center mb-4 group-hover:from-teal-500/30 group-hover:to-teal-600/30 transition-all">
-                    <Icon className="h-6 w-6 text-teal-400 group-hover:scale-110 transition-transform" />
+                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-100 to-fuchsia-100 flex items-center justify-center mb-4 group-hover:from-purple-200 group-hover:to-fuchsia-200 transition-all">
+                    <Icon className="h-6 w-6 text-purple-600 group-hover:scale-110 transition-transform" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-teal-300 transition-colors">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-purple-600 transition-colors">
                     {card.label}
                   </h3>
-                  <p className="text-sm text-gray-400">{card.description}</p>
+                  <p className="text-sm text-gray-500">{card.description}</p>
                 </CardContent>
               </Card>
             </motion.div>

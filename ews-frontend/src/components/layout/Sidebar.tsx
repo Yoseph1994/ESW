@@ -4,8 +4,9 @@ import {
   Users,
   Settings,
   LogOut,
-  Shield,
   ChevronLeft,
+  Briefcase,
+  FileText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -19,6 +20,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useAuth } from '@/context/AuthContext';
 import type { ActiveTab } from '@/types';
+import cbeIcon from '@/assets/icon-cbe.png';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -29,10 +31,17 @@ interface SidebarProps {
   onMobileClose: () => void;
 }
 
-const NAV_ITEMS: { id: ActiveTab | 'logout'; label: string; icon: typeof LayoutDashboard }[] = [
+const ADMIN_NAV_ITEMS: { id: ActiveTab | 'logout'; label: string; icon: typeof LayoutDashboard }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'employees', label: 'Employees', icon: Users },
   { id: 'options', label: 'Options', icon: Settings },
+  { id: 'logout', label: 'Logout', icon: LogOut },
+];
+
+const MONITORING_NAV_ITEMS: { id: ActiveTab | 'logout'; label: string; icon: typeof LayoutDashboard }[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'cases', label: 'Cases', icon: Briefcase },
+  { id: 'report', label: 'Report', icon: FileText },
   { id: 'logout', label: 'Logout', icon: LogOut },
 ];
 
@@ -63,8 +72,8 @@ function SidebarContent({
       {/* Logo + User */}
       <div className="p-4">
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 min-w-[2.5rem] rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
-            <Shield className="h-5 w-5 text-white" />
+          <div className="h-12 w-12 min-w-[3rem] flex items-center justify-center overflow-hidden">
+            <img src={cbeIcon} alt="CBE" className="h-full w-full object-contain bg-transparent mix-blend-screen" />
           </div>
           <AnimatePresence>
             {!collapsed && (
@@ -75,7 +84,7 @@ function SidebarContent({
                 className="overflow-hidden whitespace-nowrap"
               >
                 <h2 className="text-lg font-bold text-white">EWS</h2>
-                <p className="text-[11px] text-teal-400/70">Early Warning System</p>
+                <p className="text-[11px] text-purple-300/70">Early Warning System</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -90,8 +99,8 @@ function SidebarContent({
               className="overflow-hidden"
             >
               <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                <Avatar className="h-10 w-10 border-2 border-teal-500/30">
-                  <AvatarFallback className="bg-gradient-to-br from-teal-500 to-teal-700 text-white text-xs font-bold">
+                <Avatar className="h-10 w-10 border-2 border-purple-400/30">
+                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white text-xs font-bold">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
@@ -99,7 +108,7 @@ function SidebarContent({
                   <p className="text-sm font-medium text-white truncate">
                     {userName}
                   </p>
-                  <p className="text-[11px] text-teal-400">{role}</p>
+                  <p className="text-[11px] text-purple-300">{role}</p>
                 </div>
               </div>
             </motion.div>
@@ -112,7 +121,7 @@ function SidebarContent({
       {/* Nav Items */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-1">
-          {NAV_ITEMS.map((item) => {
+          {(role === 'MONITORING OFFICER' ? MONITORING_NAV_ITEMS : ADMIN_NAV_ITEMS).map((item) => {
             const isActive = item.id !== 'logout' && activeTab === item.id;
             const isLogout = item.id === 'logout';
             const Icon = item.icon;
@@ -125,10 +134,9 @@ function SidebarContent({
                 className={`
                   w-full justify-start gap-3 h-11 relative group transition-all duration-200
                   ${collapsed ? 'px-3 justify-center' : 'px-4'}
-                  ${
-                    isActive
-                      ? 'bg-teal-500/15 text-teal-400 hover:bg-teal-500/20 hover:text-teal-300'
-                      : isLogout
+                  ${isActive
+                    ? 'bg-purple-500/15 text-purple-300 hover:bg-purple-500/20 hover:text-purple-200'
+                    : isLogout
                       ? 'text-red-400/70 hover:text-red-400 hover:bg-red-500/10'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }
@@ -137,11 +145,11 @@ function SidebarContent({
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-teal-400 rounded-r-full"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-purple-400 rounded-r-full"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
-                <Icon className={`h-5 w-5 min-w-[1.25rem] ${isActive ? 'drop-shadow-[0_0_6px_rgba(20,184,166,0.5)]' : ''}`} />
+                <Icon className={`h-5 w-5 min-w-[1.25rem] ${isActive ? 'drop-shadow-[0_0_6px_rgba(168,85,247,0.5)]' : ''}`} />
                 <AnimatePresence>
                   {!collapsed && (
                     <motion.span
@@ -161,7 +169,7 @@ function SidebarContent({
               return (
                 <Tooltip key={item.id} delayDuration={0}>
                   <TooltipTrigger asChild>{btn}</TooltipTrigger>
-                  <TooltipContent side="right" className="bg-navy-800 text-white border-white/10">
+                  <TooltipContent side="right" className="bg-[#1e1033] text-white border-purple-500/20">
                     {item.label}
                   </TooltipContent>
                 </Tooltip>
@@ -204,8 +212,8 @@ export default function Sidebar(props: SidebarProps) {
         initial={false}
         animate={{ width: collapsed ? 72 : 280 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-16 bottom-0 z-30 hidden md:block border-r border-white/5"
-        style={{ background: 'rgba(10, 15, 30, 0.95)' }}
+        className="fixed left-0 top-16 bottom-0 z-30 hidden md:block border-r border-purple-900/20"
+        style={{ background: '#1e1033' }}
       >
         <SidebarContent {...props} />
       </motion.aside>
@@ -214,8 +222,8 @@ export default function Sidebar(props: SidebarProps) {
       <Sheet open={mobileOpen} onOpenChange={onMobileClose}>
         <SheetContent
           side="left"
-          className="w-[280px] p-0 border-r border-white/5"
-          style={{ background: 'rgba(10, 15, 30, 0.98)' }}
+          className="w-[280px] p-0 border-r border-purple-900/20"
+          style={{ background: '#1e1033' }}
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Navigation Menu</SheetTitle>

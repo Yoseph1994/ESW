@@ -39,12 +39,6 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
-    --color-teal-400: #2dd4bf;
-    --color-teal-500: #14b8a6;
-    --color-teal-600: #0d9488;
-    --color-navy-800: #0f1729;
-    --color-navy-900: #0a0f1e;
-    --color-navy-950: #060a14;
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -55,38 +49,38 @@
 }
 
 :root {
-    --background: oklch(0.12 0.02 250);
-    --foreground: oklch(0.95 0.01 250);
-    --card: oklch(0.17 0.02 250 / 60%);
-    --card-foreground: oklch(0.95 0.01 250);
-    --popover: oklch(0.15 0.025 250);
-    --popover-foreground: oklch(0.95 0.01 250);
-    --primary: oklch(0.72 0.15 175);
-    --primary-foreground: oklch(0.12 0.02 250);
-    --secondary: oklch(0.20 0.02 250);
-    --secondary-foreground: oklch(0.90 0.01 250);
-    --muted: oklch(0.20 0.02 250);
-    --muted-foreground: oklch(0.65 0.02 250);
-    --accent: oklch(0.72 0.15 175);
-    --accent-foreground: oklch(0.12 0.02 250);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.30 0.03 250 / 50%);
-    --input: oklch(0.25 0.02 250);
-    --ring: oklch(0.72 0.15 175);
-    --chart-1: oklch(0.72 0.15 175);
-    --chart-2: oklch(0.65 0.18 200);
-    --chart-3: oklch(0.58 0.15 250);
-    --chart-4: oklch(0.50 0.12 300);
-    --chart-5: oklch(0.45 0.10 350);
+    --background: #faf8ff;
+    --foreground: #1e1033;
+    --card: #ffffff;
+    --card-foreground: #1e1033;
+    --popover: #ffffff;
+    --popover-foreground: #1e1033;
+    --primary: #7c3aed;
+    --primary-foreground: #ffffff;
+    --secondary: #f3e8ff;
+    --secondary-foreground: #581c87;
+    --muted: #f5f3ff;
+    --muted-foreground: #6b7280;
+    --accent: #d946ef;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --border: #e9d5ff;
+    --input: #e9d5ff;
+    --ring: #a855f7;
+    --chart-1: #7c3aed;
+    --chart-2: #a855f7;
+    --chart-3: #d946ef;
+    --chart-4: #ec4899;
+    --chart-5: #f472b6;
     --radius: 0.75rem;
-    --sidebar: oklch(0.14 0.025 250);
-    --sidebar-foreground: oklch(0.85 0.01 250);
-    --sidebar-primary: oklch(0.72 0.15 175);
-    --sidebar-primary-foreground: oklch(0.12 0.02 250);
-    --sidebar-accent: oklch(0.72 0.15 175 / 15%);
-    --sidebar-accent-foreground: oklch(0.90 0.01 250);
-    --sidebar-border: oklch(0.30 0.03 250 / 40%);
-    --sidebar-ring: oklch(0.72 0.15 175);
+    --sidebar: #1e1033;
+    --sidebar-foreground: #e9d5ff;
+    --sidebar-primary: #a855f7;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(168, 85, 247, 0.15);
+    --sidebar-accent-foreground: #e9d5ff;
+    --sidebar-border: rgba(168, 85, 247, 0.2);
+    --sidebar-ring: #a855f7;
 }
 
 @layer base {
@@ -107,22 +101,34 @@
   }
 }
 
-/* Glassmorphism card utility */
+/* Light-mode card utility */
+.ews-card {
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.08), 0 1px 2px rgba(124, 58, 237, 0.06);
+  border-radius: 0.75rem;
+}
+
+.ews-card-hover:hover {
+  border-color: #c084fc;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.12), 0 2px 4px rgba(124, 58, 237, 0.08);
+}
+
+/* Legacy glass-card alias for backwards compat */
 .glass-card {
-  background: rgba(15, 23, 41, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(45, 212, 191, 0.1);
+  background: #ffffff;
+  border: 1px solid #e9d5ff;
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.08), 0 1px 2px rgba(124, 58, 237, 0.06);
 }
 
 .glass-card-hover:hover {
-  border-color: rgba(45, 212, 191, 0.3);
-  box-shadow: 0 0 20px rgba(20, 184, 166, 0.1);
+  border-color: #c084fc;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.12), 0 2px 4px rgba(124, 58, 237, 0.08);
 }
 
-/* Teal glow effect */
-.teal-glow {
-  box-shadow: 0 0 15px rgba(20, 184, 166, 0.3), 0 0 30px rgba(20, 184, 166, 0.1);
+/* Purple glow effect */
+.purple-glow {
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.3), 0 0 30px rgba(124, 58, 237, 0.1);
 }
 
 /* Scrollbar styling */
@@ -130,12 +136,12 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 41, 0.5);
+  background: #f5f3ff;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(45, 212, 191, 0.3);
+  background: rgba(168, 85, 247, 0.3);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(45, 212, 191, 0.5);
+  background: rgba(168, 85, 247, 0.5);
 }

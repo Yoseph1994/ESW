@@ -14,6 +14,9 @@ import { dashboardApi } from '@/services/api';
 import type { DashboardStats, UserRole, ActiveTab, OptionTab } from '@/types';
 import EmployeesContent from '@/components/managers/EmployeesContent';
 import OptionsContent from '@/components/managers/OptionsContent';
+import MonitoringDashboardContent from '@/components/monitoring/MonitoringDashboardContent';
+import MonitoringCasesContent from '@/components/monitoring/MonitoringCasesContent';
+import MonitoringReportContent from '@/components/monitoring/MonitoringReportContent';
 
 interface DashboardProps {
   activeTab: ActiveTab;
@@ -53,13 +56,13 @@ const itemVariants = {
 
 function AdminDashboard({ stats }: { stats: DashboardStats }) {
   const statCards = [
-    { label: 'Total Employees', value: stats.totalEmployees, icon: Users, color: 'from-teal-400 to-teal-600', glow: 'shadow-teal-500/20' },
-    { label: 'Sectors', value: stats.totalSectors, icon: Building2, color: 'from-blue-400 to-blue-600', glow: 'shadow-blue-500/20' },
-    { label: 'Sub Sectors', value: stats.totalSubSectors, icon: Layers, color: 'from-purple-400 to-purple-600', glow: 'shadow-purple-500/20' },
-    { label: 'Broad Segments', value: stats.totalBroadSegments, icon: Target, color: 'from-amber-400 to-amber-600', glow: 'shadow-amber-500/20' },
-    { label: 'Credit Products', value: stats.totalCreditProductLines, icon: CreditCard, color: 'from-emerald-400 to-emerald-600', glow: 'shadow-emerald-500/20' },
-    { label: 'Product Groups', value: stats.totalProductGroups, icon: Package, color: 'from-rose-400 to-rose-600', glow: 'shadow-rose-500/20' },
-    { label: 'Sub Products', value: stats.totalSubProductLines, icon: GitBranch, color: 'from-cyan-400 to-cyan-600', glow: 'shadow-cyan-500/20' },
+    { label: 'Total Employees', value: stats.totalEmployees, icon: Users, color: 'from-purple-500 to-fuchsia-600', glow: 'shadow-purple-500/20' },
+    { label: 'Sectors', value: stats.totalSectors, icon: Building2, color: 'from-violet-500 to-purple-600', glow: 'shadow-violet-500/20' },
+    { label: 'Sub Sectors', value: stats.totalSubSectors, icon: Layers, color: 'from-fuchsia-500 to-pink-600', glow: 'shadow-fuchsia-500/20' },
+    { label: 'Broad Segments', value: stats.totalBroadSegments, icon: Target, color: 'from-purple-600 to-indigo-600', glow: 'shadow-purple-600/20' },
+    { label: 'Credit Products', value: stats.totalCreditProductLines, icon: CreditCard, color: 'from-pink-500 to-rose-600', glow: 'shadow-pink-500/20' },
+    { label: 'Product Groups', value: stats.totalProductGroups, icon: Package, color: 'from-violet-600 to-purple-700', glow: 'shadow-violet-600/20' },
+    { label: 'Sub Products', value: stats.totalSubProductLines, icon: GitBranch, color: 'from-fuchsia-600 to-purple-700', glow: 'shadow-fuchsia-600/20' },
   ];
 
   return (
@@ -70,14 +73,14 @@ function AdminDashboard({ stats }: { stats: DashboardStats }) {
           const Icon = card.icon;
           return (
             <motion.div key={card.label} variants={itemVariants}>
-              <Card className={`glass-card glass-card-hover border-white/5 group cursor-default transition-all duration-300 hover:scale-[1.02] shadow-lg ${card.glow}`}>
+              <Card className={`glass-card glass-card-hover group cursor-default transition-all duration-300 hover:scale-[1.02] shadow-lg ${card.glow}`}>
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+                      <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
                         {card.label}
                       </p>
-                      <p className="text-3xl font-bold text-white">
+                      <p className="text-3xl font-bold text-gray-900">
                         {card.value.toLocaleString()}
                       </p>
                     </div>
@@ -86,9 +89,9 @@ function AdminDashboard({ stats }: { stats: DashboardStats }) {
                     </div>
                   </div>
                   <div className="flex items-center gap-1 mt-3">
-                    <ArrowUpRight className="h-3 w-3 text-teal-400" />
-                    <span className="text-xs text-teal-400">+{Math.floor(Math.random() * 15 + 1)}%</span>
-                    <span className="text-xs text-gray-500 ml-1">from last month</span>
+                    <ArrowUpRight className="h-3 w-3 text-purple-600" />
+                    <span className="text-xs text-purple-600">+{Math.floor(Math.random() * 15 + 1)}%</span>
+                    <span className="text-xs text-gray-400 ml-1">from last month</span>
                   </div>
                 </CardContent>
               </Card>
@@ -99,10 +102,10 @@ function AdminDashboard({ stats }: { stats: DashboardStats }) {
 
       {/* Recent Activity */}
       <motion.div variants={itemVariants}>
-        <Card className="glass-card border-white/5">
+        <Card className="glass-card">
           <CardHeader className="pb-3">
-            <CardTitle className="text-white flex items-center gap-2">
-              <Activity className="h-5 w-5 text-teal-400" />
+            <CardTitle className="text-gray-900 flex items-center gap-2">
+              <Activity className="h-5 w-5 text-purple-600" />
               Recent Activity
             </CardTitle>
           </CardHeader>
@@ -111,21 +114,21 @@ function AdminDashboard({ stats }: { stats: DashboardStats }) {
               {stats.recentActivity?.map((activity) => (
                 <div
                   key={activity.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors"
+                  className="flex items-center justify-between p-3 rounded-lg bg-purple-50/50 border border-purple-100 hover:bg-purple-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className={`h-2 w-2 rounded-full ${
-                      activity.action === 'Created' ? 'bg-teal-400' :
-                      activity.action === 'Updated' ? 'bg-blue-400' : 'bg-red-400'
+                      activity.action === 'Created' ? 'bg-purple-500' :
+                      activity.action === 'Updated' ? 'bg-fuchsia-500' : 'bg-red-400'
                     }`} />
                     <div>
-                      <p className="text-sm text-white">{activity.entity}</p>
+                      <p className="text-sm text-gray-800">{activity.entity}</p>
                       <p className="text-xs text-gray-500">
                         {activity.action} by {activity.user}
                       </p>
                     </div>
                   </div>
-                  <span className="text-xs text-gray-500">{activity.timestamp}</span>
+                  <span className="text-xs text-gray-400">{activity.timestamp}</span>
                 </div>
               ))}
             </div>
@@ -147,8 +150,8 @@ function CRMManagerDashboard() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible">
       <motion.div variants={itemVariants} className="mb-6">
-        <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-teal-400" />
+        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <Briefcase className="h-5 w-5 text-purple-600" />
           My Team Overview
         </h2>
       </motion.div>
@@ -157,16 +160,16 @@ function CRMManagerDashboard() {
           const Icon = card.icon;
           return (
             <motion.div key={card.label} variants={itemVariants}>
-              <Card className="glass-card glass-card-hover border-white/5 hover:scale-[1.02] transition-all duration-300">
+              <Card className="glass-card glass-card-hover hover:scale-[1.02] transition-all duration-300">
                 <CardContent className="p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <Icon className="h-5 w-5 text-teal-400" />
-                    <Badge variant="outline" className="text-teal-400 border-teal-500/30 text-xs">
+                    <Icon className="h-5 w-5 text-purple-600" />
+                    <Badge variant="outline" className="text-purple-600 border-purple-300 text-xs">
                       {card.trend}
                     </Badge>
                   </div>
-                  <p className="text-2xl font-bold text-white">{card.value}</p>
-                  <p className="text-xs text-gray-400 mt-1">{card.label}</p>
+                  <p className="text-2xl font-bold text-gray-900">{card.value}</p>
+                  <p className="text-xs text-gray-500 mt-1">{card.label}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -188,8 +191,8 @@ function CRMOfficerDashboard() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible">
       <motion.div variants={itemVariants} className="mb-6">
-        <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-          <Shield className="h-5 w-5 text-teal-400" />
+        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <Shield className="h-5 w-5 text-purple-600" />
           My Portfolio
         </h2>
       </motion.div>
@@ -198,13 +201,13 @@ function CRMOfficerDashboard() {
           const Icon = card.icon;
           return (
             <motion.div key={card.label} variants={itemVariants}>
-              <Card className="glass-card glass-card-hover border-white/5 hover:scale-[1.02] transition-all duration-300">
+              <Card className="glass-card glass-card-hover hover:scale-[1.02] transition-all duration-300">
                 <CardContent className="p-5 text-center">
-                  <div className="h-12 w-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-teal-500/20 to-teal-600/20 flex items-center justify-center">
-                    <Icon className="h-6 w-6 text-teal-400" />
+                  <div className="h-12 w-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-100 to-fuchsia-100 flex items-center justify-center">
+                    <Icon className="h-6 w-6 text-purple-600" />
                   </div>
-                  <p className="text-2xl font-bold text-white">{card.value}</p>
-                  <p className="text-xs text-gray-400 mt-1">{card.label}</p>
+                  <p className="text-2xl font-bold text-gray-900">{card.value}</p>
+                  <p className="text-xs text-gray-500 mt-1">{card.label}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -224,17 +227,17 @@ function MonitoringDashboard() {
   ];
 
   const severityColors: Record<string, string> = {
-    high: 'from-red-500/20 to-red-600/20 text-red-400',
-    medium: 'from-amber-500/20 to-amber-600/20 text-amber-400',
-    low: 'from-green-500/20 to-green-600/20 text-green-400',
-    ok: 'from-teal-500/20 to-teal-600/20 text-teal-400',
+    high: 'from-red-100 to-red-50 text-red-500',
+    medium: 'from-amber-100 to-amber-50 text-amber-500',
+    low: 'from-green-100 to-green-50 text-green-500',
+    ok: 'from-purple-100 to-fuchsia-50 text-purple-500',
   };
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible">
       <motion.div variants={itemVariants} className="mb-6">
-        <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-amber-400" />
+        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <AlertTriangle className="h-5 w-5 text-amber-500" />
           Alerts & Monitoring
         </h2>
       </motion.div>
@@ -243,13 +246,13 @@ function MonitoringDashboard() {
           const Icon = card.icon;
           return (
             <motion.div key={card.label} variants={itemVariants}>
-              <Card className="glass-card glass-card-hover border-white/5 hover:scale-[1.02] transition-all duration-300">
+              <Card className="glass-card glass-card-hover hover:scale-[1.02] transition-all duration-300">
                 <CardContent className="p-5 text-center">
                   <div className={`h-12 w-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${severityColors[card.severity]} flex items-center justify-center`}>
                     <Icon className="h-6 w-6" />
                   </div>
-                  <p className="text-2xl font-bold text-white">{card.value}</p>
-                  <p className="text-xs text-gray-400 mt-1">{card.label}</p>
+                  <p className="text-2xl font-bold text-gray-900">{card.value}</p>
+                  <p className="text-xs text-gray-500 mt-1">{card.label}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -283,11 +286,11 @@ function DashboardContent({ role }: { role: UserRole }) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[...Array(7)].map((_, i) => (
-          <Card key={i} className="glass-card border-white/5">
+          <Card key={i} className="glass-card">
             <CardContent className="p-5 space-y-3">
-              <Skeleton className="h-4 w-20 bg-white/5" />
-              <Skeleton className="h-8 w-16 bg-white/5" />
-              <Skeleton className="h-3 w-24 bg-white/5" />
+              <Skeleton className="h-4 w-20 bg-purple-100" />
+              <Skeleton className="h-8 w-16 bg-purple-100" />
+              <Skeleton className="h-3 w-24 bg-purple-100" />
             </CardContent>
           </Card>
         ))}
@@ -298,7 +301,7 @@ function DashboardContent({ role }: { role: UserRole }) {
   switch (role) {
     case 'CRM MANAGER': return <CRMManagerDashboard />;
     case 'CRM OFFICER': return <CRMOfficerDashboard />;
-    case 'MONITORING OFFICER': return <MonitoringDashboard />;
+    case 'MONITORING OFFICER': return <MonitoringDashboardContent />;
     default: return <AdminDashboard stats={stats} />;
   }
 }
@@ -317,13 +320,15 @@ export default function Dashboard({ activeTab, onTabChange }: DashboardProps) {
         transition={{ duration: 0.3 }}
       >
         {activeTab === 'dashboard' && <DashboardContent role={role} />}
-        {activeTab === 'employees' && <EmployeesContent />}
-        {activeTab === 'options' && (
+        {activeTab === 'employees' && role === 'ADMIN' && <EmployeesContent />}
+        {activeTab === 'options' && role === 'ADMIN' && (
           <OptionsContent
             activeSubTab={optionSubTab}
             onSubTabChange={setOptionSubTab}
           />
         )}
+        {activeTab === 'cases' && role === 'MONITORING OFFICER' && <MonitoringCasesContent />}
+        {activeTab === 'report' && role === 'MONITORING OFFICER' && <MonitoringReportContent />}
       </motion.div>
     </AnimatePresence>
   );
