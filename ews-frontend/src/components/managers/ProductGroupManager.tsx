@@ -103,7 +103,7 @@ export default function ProductGroupManager() {
           </div>
           <div className="space-y-2">
             <Label className="text-gray-700">Credit Product Line</Label>
-            <Select value={watch('creditProductLineId')} onValueChange={(v) => setValue('creditProductLineId', v)}>
+            <Select value={watch('creditProductLineId')} onValueChange={(v) => { if (v) setValue('creditProductLineId', v); }}>
               <SelectTrigger className="bg-white border-gray-200 text-gray-800"><SelectValue placeholder="Select credit product line" /></SelectTrigger>
               <SelectContent className="bg-white border-gray-200 text-gray-800">
                 {parents.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}

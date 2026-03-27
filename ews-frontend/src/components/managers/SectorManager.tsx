@@ -38,7 +38,7 @@ export default function SectorManager() {
   const [editing, setEditing] = useState<Sector | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
   });
 
   useEffect(() => {

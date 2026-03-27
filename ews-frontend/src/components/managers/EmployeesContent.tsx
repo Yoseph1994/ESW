@@ -237,7 +237,7 @@ export default function EmployeesContent() {
             Employees
           </CardTitle>
           <div className="flex items-center gap-3">
-            <Select value={roleFilter} onValueChange={setRoleFilter}>
+            <Select value={roleFilter} onValueChange={(v) => { if (v) setRoleFilter(v); }}>
               <SelectTrigger className="w-[180px] bg-white border-gray-200 text-gray-800">
                 <SelectValue placeholder="Filter by role" />
               </SelectTrigger>
@@ -304,7 +304,7 @@ export default function EmployeesContent() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label className="text-gray-700">Role</Label>
-              <Select value={watch('role')} onValueChange={(v) => setValue('role', v as UserRole)}>
+              <Select value={watch('role')} onValueChange={(v) => { if (v) setValue('role', v as UserRole); }}>
                 <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                   <SelectValue />
                 </SelectTrigger>
@@ -317,7 +317,7 @@ export default function EmployeesContent() {
             </div>
             <div className="space-y-2">
               <Label className="text-gray-700">Status</Label>
-              <Select value={watch('status')} onValueChange={(v) => setValue('status', v as 'ACTIVE' | 'INACTIVE')}>
+              <Select value={watch('status')} onValueChange={(v) => { if (v) setValue('status', v as 'ACTIVE' | 'INACTIVE'); }}>
                 <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                   <SelectValue />
                 </SelectTrigger>
@@ -331,7 +331,7 @@ export default function EmployeesContent() {
 
           <div className="space-y-2">
             <Label className="text-gray-700">District</Label>
-            <Select value={watch('district')} onValueChange={(v) => setValue('district', v)}>
+            <Select value={watch('district')} onValueChange={(v) => { if (v) setValue('district', v); }}>
               <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                 <SelectValue placeholder="Select district" />
               </SelectTrigger>

@@ -98,10 +98,28 @@ export interface AuthResponse {
 }
 
 export type OptionTab = 'sectors' | 'subSectors' | 'broadSegments' | 'creditProductLines' | 'productGroups' | 'subProductLines';
-export type ActiveTab = 'dashboard' | 'employees' | 'options' | 'cases' | 'report';
+export type ActiveTab = 'dashboard' | 'employees' | 'options' | 'cases' | 'report' | 'newCases' | 'completedCases';
+
+// CRM Manager types
+export type CrmActiveTab = 'dashboard' | 'newCases' | 'completedCases';
+export type NewCasesSubTab = 'yetToBeAssigned' | 'assigned';
+
+export interface CrmOfficer {
+  id: string;
+  name: string;
+  district: string;
+  activeCases: number;
+}
+
+export interface CaseCriterion {
+  id: number;
+  name: string;
+  score: string;
+  notes: string;
+}
 
 // Monitoring Manager types
-export type CaseStatus = 'NEW' | 'PENDING' | 'COMPLETED';
+export type CaseStatus = 'NEW' | 'PENDING' | 'COMPLETED' | 'ASSIGNED' | 'IN_PROGRESS';
 export type RiskLevel = 'HIGH' | 'MEDIUM' | 'LOW';
 
 export interface CaseEvaluationCriterion {
@@ -123,28 +141,32 @@ export interface CaseEvaluation {
 
 export interface Case {
   id: string;
-  caseId: string;
+  caseId?: string; // CRM Manager has caseNumber instead
+  caseNumber?: string;
   customerId: string;
   customerName: string;
-  totalExposure: number;
-  customerSegment: string;
-  economicSector: string;
-  subEconomicSector: string;
-  broadSegment: string;
-  creditProductLine: string;
-  productGroup: string;
-  subProductGroup: string;
-  purpose: string;
+  totalExposure?: number;
+  customerSegment?: string;
+  economicSector?: string;
+  subEconomicSector?: string;
+  broadSegment?: string;
+  creditProductLine?: string;
+  productGroup?: string;
+  subProductGroup?: string;
+  purpose?: string;
   approveAmount: number;
-  lafNo: string;
-  dateOfApproval: string;
-  limit: number;
-  tenure: string;
+  lafNo?: string;
+  dateOfApproval?: string;
+  limit?: number;
+  tenure?: string;
   status: CaseStatus;
   riskLevel?: RiskLevel;
   dateSent?: string;
-  dateReturned?: string;
-  evaluation?: CaseEvaluation;
+  dateReturned?: string; // Re-added for Monitoring Manager
+  evaluation?: CaseEvaluation; // Re-added for Monitoring Manager
+  assignedOfficer?: string;
+  assignedOfficerId?: string;
+  completedDate?: string;
   createdAt: string;
   updatedAt: string;
 }

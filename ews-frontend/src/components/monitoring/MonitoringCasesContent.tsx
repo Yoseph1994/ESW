@@ -224,7 +224,7 @@ function SelectWithAdd({
 
   return (
     <div className="flex gap-2">
-      <Select value={value} onValueChange={onValueChange}>
+      <Select value={value} onValueChange={(v) => { if (v) onValueChange(v); }}>
         <SelectTrigger className="bg-white border-gray-200 text-gray-800 flex-1">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -305,7 +305,7 @@ export default function MonitoringCasesContent() {
     watch,
     formState: { errors },
   } = useForm<CaseFormData>({
-    resolver: zodResolver(caseSchema),
+    resolver: zodResolver(caseSchema) as any,
     defaultValues: {
       customerId: '', customerName: '', totalExposure: 0,
       customerSegment: '', economicSector: '', subEconomicSector: '',
@@ -403,7 +403,7 @@ export default function MonitoringCasesContent() {
     {
       accessorKey: 'approveAmount',
       header: 'Approve Amount',
-      cell: ({ row }) => <span>{row.original.approveAmount.toLocaleString()} ETB</span>,
+      cell: ({ row }) => <span>{row.original.approveAmount?.toLocaleString() ?? 0} ETB</span>,
     },
     { accessorKey: 'dateReturned', header: 'Date Returned' },
     {
@@ -474,7 +474,7 @@ export default function MonitoringCasesContent() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-5">
+              <form onSubmit={handleSubmit(onFormSubmit as any)} className="space-y-5">
                 {/* Case ID (auto-generated, read-only) */}
                 <div className="space-y-2">
                   <Label className="text-gray-700">Case ID</Label>
@@ -509,7 +509,7 @@ export default function MonitoringCasesContent() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-gray-700">Customer Segment</Label>
-                    <Select value={watch('customerSegment')} onValueChange={(v) => setValue('customerSegment', v)}>
+                    <Select value={watch('customerSegment') ?? ''} onValueChange={(v) => { if (v) setValue('customerSegment', v); }}>
                       <SelectTrigger className="bg-white border-gray-200 text-gray-800">
                         <SelectValue placeholder="Select segment" />
                       </SelectTrigger>
@@ -749,7 +749,7 @@ export default function MonitoringCasesContent() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Total Exposure</p>
-                  <p className="text-gray-800">{Number(reviewData.totalExposure).toLocaleString()} ETB</p>
+                  <p className="text-gray-800">{Number(reviewData.totalExposure || 0).toLocaleString()} ETB</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Customer Segment</p>
@@ -785,7 +785,7 @@ export default function MonitoringCasesContent() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Approve Amount</p>
-                  <p className="text-gray-800">{Number(reviewData.approveAmount).toLocaleString()} ETB</p>
+                  <p className="text-gray-800">{Number(reviewData.approveAmount || 0).toLocaleString()} ETB</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">LAF No</p>
@@ -797,7 +797,7 @@ export default function MonitoringCasesContent() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Limit</p>
-                  <p className="text-gray-800">{Number(reviewData.limit).toLocaleString()} ETB</p>
+                  <p className="text-gray-800">{Number(reviewData.limit || 0).toLocaleString()} ETB</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Tenure</p>

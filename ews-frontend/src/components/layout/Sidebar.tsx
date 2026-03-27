@@ -16,6 +16,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  TooltipProvider,
 } from '@/components/ui/tooltip';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useAuth } from '@/context/AuthContext';
@@ -42,6 +43,13 @@ const MONITORING_NAV_ITEMS: { id: ActiveTab | 'logout'; label: string; icon: typ
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'cases', label: 'Cases', icon: Briefcase },
   { id: 'report', label: 'Report', icon: FileText },
+  { id: 'logout', label: 'Logout', icon: LogOut },
+];
+
+const CRM_NAV_ITEMS: { id: ActiveTab | 'logout'; label: string; icon: typeof LayoutDashboard }[] = [
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'newCases', label: 'New Cases', icon: Briefcase }, // using Briefcase instead of FolderOpen
+  { id: 'completedCases', label: 'Complete Case', icon: FileText }, // using FileText instead of CheckCircle2
   { id: 'logout', label: 'Logout', icon: LogOut },
 ];
 
@@ -121,7 +129,7 @@ function SidebarContent({
       {/* Nav Items */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-1">
-          {(role === 'MONITORING OFFICER' ? MONITORING_NAV_ITEMS : ADMIN_NAV_ITEMS).map((item) => {
+          {(role === 'MONITORING OFFICER' ? MONITORING_NAV_ITEMS : role === 'CRM MANAGER' ? CRM_NAV_ITEMS : ADMIN_NAV_ITEMS).map((item) => {
             const isActive = item.id !== 'logout' && activeTab === item.id;
             const isLogout = item.id === 'logout';
             const Icon = item.icon;
@@ -167,12 +175,14 @@ function SidebarContent({
 
             if (collapsed) {
               return (
-                <Tooltip key={item.id} delayDuration={0}>
-                  <TooltipTrigger asChild>{btn}</TooltipTrigger>
-                  <TooltipContent side="right" className="bg-[#1e1033] text-white border-purple-500/20">
-                    {item.label}
-                  </TooltipContent>
-                </Tooltip>
+                <TooltipProvider delay={0}>
+                  <Tooltip key={item.id}>
+                    <TooltipTrigger>{btn}</TooltipTrigger>
+                    <TooltipContent side="right" className="bg-[#1e1033] text-white border-purple-500/20">
+                      {item.label}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               );
             }
             return btn;

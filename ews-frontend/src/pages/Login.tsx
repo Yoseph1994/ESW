@@ -54,6 +54,11 @@ export default function Login() {
         toast.success('Welcome back!', {
           description: 'Logged in as MONITORING OFFICER (demo mode)',
         });
+      } else if (data.username === 'crm_manager' && data.password === 'password123') {
+        login('demo-token-crm', 'CRM Manager', 'CRM MANAGER');
+        toast.success('Welcome back!', {
+          description: 'Logged in as CRM MANAGER (demo mode)',
+        });
       } else {
         toast.error('Login Failed', {
           description: err?.response?.data?.message || 'Invalid credentials',
@@ -174,6 +179,10 @@ export default function Login() {
               <p>
                 Use <span className="text-purple-300">monitoring_manager</span> /{' '}
                 <span className="text-purple-300">Monitor2026!ews</span> for Monitoring Manager
+              </p>
+              <p>
+                Use <span className="text-purple-300">crm_manager</span> /{' '}
+                <span className="text-purple-300">password123</span> for CRM Manager
               </p>
             </div>
           </CardContent>

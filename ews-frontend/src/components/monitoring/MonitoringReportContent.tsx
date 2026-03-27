@@ -215,11 +215,11 @@ export default function MonitoringReportContent() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Approve Amount</p>
-                  <p className="text-gray-800">{selectedCase.approveAmount.toLocaleString()} ETB</p>
+                  <p className="text-gray-800">{selectedCase.approveAmount?.toLocaleString() ?? 0} ETB</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Total Exposure</p>
-                  <p className="text-gray-800">{selectedCase.totalExposure.toLocaleString()} ETB</p>
+                  <p className="text-gray-800">{selectedCase.totalExposure?.toLocaleString() ?? 0} ETB</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-xs">Product</p>

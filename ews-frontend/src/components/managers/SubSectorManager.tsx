@@ -105,7 +105,7 @@ export default function SubSectorManager() {
           </div>
           <div className="space-y-2">
             <Label className="text-gray-700">Sector</Label>
-            <Select value={watch('sectorId')} onValueChange={(v) => setValue('sectorId', v)}>
+            <Select value={watch('sectorId')} onValueChange={(v) => { if (v) setValue('sectorId', v); }}>
               <SelectTrigger className="bg-white border-gray-200 text-gray-800"><SelectValue placeholder="Select sector" /></SelectTrigger>
               <SelectContent className="bg-white border-gray-200 text-gray-800">
                 {sectors.map((s) => <SelectItem key={s.id} value={s.id}>{s.economicSector}</SelectItem>)}

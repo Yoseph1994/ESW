@@ -103,7 +103,7 @@ export default function CreditProductLineManager() {
           </div>
           <div className="space-y-2">
             <Label className="text-gray-700">Broad Segment</Label>
-            <Select value={watch('broadSegmentId')} onValueChange={(v) => setValue('broadSegmentId', v)}>
+            <Select value={watch('broadSegmentId')} onValueChange={(v) => { if (v) setValue('broadSegmentId', v); }}>
               <SelectTrigger className="bg-white border-gray-200 text-gray-800"><SelectValue placeholder="Select broad segment" /></SelectTrigger>
               <SelectContent className="bg-white border-gray-200 text-gray-800">
                 {parents.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}

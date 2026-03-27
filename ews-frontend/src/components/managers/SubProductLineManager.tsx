@@ -103,7 +103,7 @@ export default function SubProductLineManager() {
           </div>
           <div className="space-y-2">
             <Label className="text-gray-700">Product Group</Label>
-            <Select value={watch('productGroupId')} onValueChange={(v) => setValue('productGroupId', v)}>
+            <Select value={watch('productGroupId')} onValueChange={(v) => { if (v) setValue('productGroupId', v); }}>
               <SelectTrigger className="bg-white border-gray-200 text-gray-800"><SelectValue placeholder="Select product group" /></SelectTrigger>
               <SelectContent className="bg-white border-gray-200 text-gray-800">
                 {parents.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}

@@ -17,6 +17,9 @@ import OptionsContent from '@/components/managers/OptionsContent';
 import MonitoringDashboardContent from '@/components/monitoring/MonitoringDashboardContent';
 import MonitoringCasesContent from '@/components/monitoring/MonitoringCasesContent';
 import MonitoringReportContent from '@/components/monitoring/MonitoringReportContent';
+import CrmManagerDashboard from '@/components/crm-manager/CrmManagerDashboard';
+import NewCasesContent from '@/components/crm-manager/NewCasesContent';
+import CompletedCasesContent from '@/components/crm-manager/CompletedCasesContent';
 
 interface DashboardProps {
   activeTab: ActiveTab;
@@ -139,46 +142,9 @@ function AdminDashboard({ stats }: { stats: DashboardStats }) {
   );
 }
 
-function CRMManagerDashboard() {
-  const teamCards = [
-    { label: 'Team Members', value: 24, icon: Users, trend: '+3' },
-    { label: 'Active Cases', value: 156, icon: Briefcase, trend: '+12' },
-    { label: 'Performance', value: '94%', icon: TrendingUp, trend: '+2%' },
-    { label: 'Pending Reviews', value: 8, icon: BarChart3, trend: '-3' },
-  ];
+// CRM components represent the actual implementations now
+// function CRMManagerDashboard() removed
 
-  return (
-    <motion.div variants={containerVariants} initial="hidden" animate="visible">
-      <motion.div variants={itemVariants} className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-purple-600" />
-          My Team Overview
-        </h2>
-      </motion.div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {teamCards.map((card) => {
-          const Icon = card.icon;
-          return (
-            <motion.div key={card.label} variants={itemVariants}>
-              <Card className="glass-card glass-card-hover hover:scale-[1.02] transition-all duration-300">
-                <CardContent className="p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <Icon className="h-5 w-5 text-purple-600" />
-                    <Badge variant="outline" className="text-purple-600 border-purple-300 text-xs">
-                      {card.trend}
-                    </Badge>
-                  </div>
-                  <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-                  <p className="text-xs text-gray-500 mt-1">{card.label}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
-}
 
 function CRMOfficerDashboard() {
   const portfolioCards = [
@@ -299,7 +265,7 @@ function DashboardContent({ role }: { role: UserRole }) {
   }
 
   switch (role) {
-    case 'CRM MANAGER': return <CRMManagerDashboard />;
+    case 'CRM MANAGER': return <CrmManagerDashboard onTabChange={(tab) => {}} />; // Will handle tab change differently
     case 'CRM OFFICER': return <CRMOfficerDashboard />;
     case 'MONITORING OFFICER': return <MonitoringDashboardContent />;
     default: return <AdminDashboard stats={stats} />;
@@ -329,6 +295,8 @@ export default function Dashboard({ activeTab, onTabChange }: DashboardProps) {
         )}
         {activeTab === 'cases' && role === 'MONITORING OFFICER' && <MonitoringCasesContent />}
         {activeTab === 'report' && role === 'MONITORING OFFICER' && <MonitoringReportContent />}
+        {activeTab === 'newCases' && role === 'CRM MANAGER' && <NewCasesContent />}
+        {activeTab === 'completedCases' && role === 'CRM MANAGER' && <CompletedCasesContent />}
       </motion.div>
     </AnimatePresence>
   );

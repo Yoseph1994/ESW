@@ -29,6 +29,8 @@ const PAGE_TITLES: Record<ActiveTab, string> = {
   options: 'Options',
   cases: 'Cases',
   report: 'Report',
+  newCases: 'New Cases',
+  completedCases: 'Complete Case',
 };
 
 export default function Header({ activeTab, onToggleSidebar }: HeaderProps) {
