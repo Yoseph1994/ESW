@@ -189,8 +189,8 @@ export default function EmployeesContent() {
       cell: ({ row }) => (
         <Badge
           className={`text-xs ${row.original.status === 'ACTIVE'
-              ? 'bg-purple-50 text-purple-600 border-purple-200'
-              : 'bg-red-50 text-red-600 border-red-200'
+            ? 'bg-purple-50 text-purple-600 border-purple-200'
+            : 'bg-red-50 text-red-600 border-red-200'
             }`}
           variant="outline"
         >
