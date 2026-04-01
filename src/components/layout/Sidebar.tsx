@@ -4,7 +4,6 @@ import {
   Users,
   Settings,
   LogOut,
-  ChevronLeft,
   Briefcase,
   FileText,
   ClipboardList,
@@ -84,61 +83,57 @@ function SidebarContent({
     }
   };
 
-  return (
-    <div className="flex flex-col h-full">
-      {/* Logo + User */}
-      <div className="p-4">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-12 w-12 min-w-[3rem] flex items-center justify-center overflow-hidden">
-            <img src={cbeIcon} alt="CBE" className="h-full w-full object-contain bg-transparent mix-blend-screen" />
-          </div>
-          <AnimatePresence>
-            {!collapsed && (
-              <motion.div
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: 'auto' }}
-                exit={{ opacity: 0, width: 0 }}
-                className="overflow-hidden whitespace-nowrap"
-              >
-                <h2 className="text-lg font-bold text-white">EWS</h2>
-                <p className="text-[11px] text-purple-300/70">Early Warning System</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+  const navItems =
+    role === 'MONITORING OFFICER'
+      ? MONITORING_NAV_ITEMS
+      : role === 'CRM MANAGER'
+        ? CRM_NAV_ITEMS
+        : role === 'CRM OFFICER'
+          ? CRM_OFFICER_NAV_ITEMS
+          : ADMIN_NAV_ITEMS;
 
+  return (
+    <div
+      className="flex flex-col h-full"
+      style={{ fontFamily: "'Times New Roman', Times, serif" }}
+    >
+      {/* Logo Section */}
+      <div className="flex flex-col items-center pt-6 pb-4 px-4">
+        <div className={`flex items-center justify-center overflow-hidden ${collapsed ? 'h-10 w-10' : 'h-16 w-16'} transition-all duration-300`}>
+          <img
+            src={cbeIcon}
+            alt="CBE"
+            className="h-full w-full object-contain"
+          />
+        </div>
         <AnimatePresence>
           {!collapsed && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden"
+              className="text-center mt-2 overflow-hidden"
             >
-              <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                <Avatar className="h-10 w-10 border-2 border-purple-400/30">
-                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white text-xs font-bold">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="overflow-hidden">
-                  <p className="text-sm font-medium text-white truncate">
-                    {userName}
-                  </p>
-                  <p className="text-[11px] text-purple-300">{role}</p>
-                </div>
-              </div>
+              <h2
+                className="text-lg font-bold"
+                style={{ color: '#c41fa8' }}
+              >
+                EWS
+              </h2>
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest">
+                Early Warning System
+              </p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <Separator className="bg-white/5 mx-4" />
+      <Separator className="mx-4" style={{ backgroundColor: '#f0e6ee' }} />
 
       {/* Nav Items */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-1">
-          {(role === 'MONITORING OFFICER' ? MONITORING_NAV_ITEMS : role === 'CRM MANAGER' ? CRM_NAV_ITEMS : role === 'CRM OFFICER' ? CRM_OFFICER_NAV_ITEMS : ADMIN_NAV_ITEMS).map((item) => {
+          {navItems.map((item) => {
             const isActive = item.id !== 'logout' && activeTab === item.id;
             const isLogout = item.id === 'logout';
             const Icon = item.icon;
@@ -149,31 +144,37 @@ function SidebarContent({
                 variant="ghost"
                 onClick={() => handleClick(item.id)}
                 className={`
-                  w-full justify-start gap-3 h-11 relative group transition-all duration-200
+                  w-full justify-start gap-3 h-11 relative group transition-all duration-200 rounded-lg
                   ${collapsed ? 'px-3 justify-center' : 'px-4'}
                   ${isActive
-                    ? 'bg-purple-500/15 text-purple-300 hover:bg-purple-500/20 hover:text-purple-200'
+                    ? 'text-white hover:text-white'
                     : isLogout
-                      ? 'text-red-400/70 hover:text-red-400 hover:bg-red-500/10'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      ? 'text-red-400/70 hover:text-red-500 hover:bg-red-50'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }
                 `}
+                style={
+                  isActive
+                    ? {
+                        background: 'linear-gradient(135deg, #c41fa8 0%, #a61d94 100%)',
+                        boxShadow: '0 2px 8px rgba(196, 31, 168, 0.3)',
+                        fontFamily: "'Times New Roman', Times, serif",
+                      }
+                    : { fontFamily: "'Times New Roman', Times, serif" }
+                }
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-purple-400 rounded-r-full"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <Icon className={`h-5 w-5 min-w-[1.25rem] ${isActive ? 'drop-shadow-[0_0_6px_rgba(168,85,247,0.5)]' : ''}`} />
+                <Icon
+                  className={`h-5 w-5 min-w-[1.25rem] ${
+                    isActive ? 'text-white' : ''
+                  }`}
+                />
                 <AnimatePresence>
                   {!collapsed && (
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
-                      className="overflow-hidden whitespace-nowrap text-sm"
+                      className="overflow-hidden whitespace-nowrap text-sm font-medium"
                     >
                       {item.label}
                     </motion.span>
@@ -184,10 +185,13 @@ function SidebarContent({
 
             if (collapsed) {
               return (
-                <TooltipProvider delay={0}>
-                  <Tooltip key={item.id}>
+                <TooltipProvider delay={0} key={item.id}>
+                  <Tooltip>
                     <TooltipTrigger>{btn}</TooltipTrigger>
-                    <TooltipContent side="right" className="bg-[#1e1033] text-white border-purple-500/20">
+                    <TooltipContent
+                      side="right"
+                      className="bg-white text-gray-800 border border-gray-200 shadow-lg"
+                    >
                       {item.label}
                     </TooltipContent>
                   </Tooltip>
@@ -199,23 +203,50 @@ function SidebarContent({
         </nav>
       </ScrollArea>
 
-      {/* Footer */}
+      {/* Footer: User Profile */}
       <div className="p-4">
-        <Separator className="bg-white/5 mb-4" />
+        <Separator className="mb-4" style={{ backgroundColor: '#f0e6ee' }} />
         <AnimatePresence>
           {!collapsed && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-[10px] text-gray-500 text-center"
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden"
             >
-              Commercial Bank of Ethiopia
-              <br />
-              © 2026 EWS v1.0
-            </motion.p>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                <Avatar className="h-10 w-10 border-2" style={{ borderColor: 'rgba(196, 31, 168, 0.3)' }}>
+                  <AvatarFallback
+                    className="text-white text-xs font-bold"
+                    style={{ background: 'linear-gradient(135deg, #c41fa8 0%, #a61d94 100%)' }}
+                  >
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="overflow-hidden">
+                  <p className="text-sm font-medium text-gray-800 truncate">
+                    {userName}
+                  </p>
+                  <p className="text-[11px]" style={{ color: '#c41fa8' }}>
+                    {role}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
+        {collapsed && (
+          <div className="flex justify-center">
+            <Avatar className="h-9 w-9 border-2" style={{ borderColor: 'rgba(196, 31, 168, 0.3)' }}>
+              <AvatarFallback
+                className="text-white text-xs font-bold"
+                style={{ background: 'linear-gradient(135deg, #c41fa8 0%, #a61d94 100%)' }}
+              >
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -229,10 +260,13 @@ export default function Sidebar(props: SidebarProps) {
       {/* Desktop Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ width: collapsed ? 72 : 280 }}
+        animate={{ width: collapsed ? 72 : 260 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-16 bottom-0 z-30 hidden md:block border-r border-purple-900/20"
-        style={{ background: '#1e1033' }}
+        className="fixed left-0 top-16 bottom-0 z-30 hidden md:block border-r"
+        style={{
+          background: '#ffffff',
+          borderColor: '#f0e6ee',
+        }}
       >
         <SidebarContent {...props} />
       </motion.aside>
@@ -241,8 +275,11 @@ export default function Sidebar(props: SidebarProps) {
       <Sheet open={mobileOpen} onOpenChange={onMobileClose}>
         <SheetContent
           side="left"
-          className="w-[280px] p-0 border-r border-purple-900/20"
-          style={{ background: '#1e1033' }}
+          className="w-[260px] p-0 border-r"
+          style={{
+            background: '#ffffff',
+            borderColor: '#f0e6ee',
+          }}
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Navigation Menu</SheetTitle>

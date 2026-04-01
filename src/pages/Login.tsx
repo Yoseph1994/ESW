@@ -14,7 +14,10 @@ import { useAuth } from '@/context/AuthContext';
 import cbeIcon from '@/assets/icon-cbe.png';
 
 const loginSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Please enter a valid email address'),
   password: z.string().min(1, 'Password is required'),
 });
 
@@ -31,35 +34,35 @@ export default function Login() {
     formState: { errors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { username: '', password: '' },
+    defaultValues: { email: '', password: '' },
   });
 
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
     try {
-      const res = await authApi.login(data);
+      const res = await authApi.login({ username: data.email, password: data.password });
       login(res.data.token, res.data.user.name, res.data.user.role);
       toast.success('Welcome back!', {
         description: `Logged in as ${res.data.user.role}`,
       });
     } catch (err: any) {
-      // For demo: allow login with admin/password
-      if (data.username === 'admin' && data.password === 'password') {
+      // For demo: allow login with demo credentials
+      if (data.email === 'admin@cbe.com.et' && data.password === 'password') {
         login('demo-token-123', 'Yohannes Sintayhu Getan', 'ADMIN');
         toast.success('Welcome back!', {
           description: 'Logged in as ADMIN (demo mode)',
         });
-      } else if (data.username === 'monitoring_manager' && data.password === 'Monitor2026!ews') {
+      } else if (data.email === 'monitoring@cbe.com.et' && data.password === 'Monitor2026!ews') {
         login('demo-token-monitoring', 'Monitoring Manager', 'MONITORING OFFICER');
         toast.success('Welcome back!', {
           description: 'Logged in as MONITORING OFFICER (demo mode)',
         });
-      } else if (data.username === 'crm_manager' && data.password === 'password123') {
+      } else if (data.email === 'crm_manager@cbe.com.et' && data.password === 'password123') {
         login('demo-token-crm', 'CRM Manager', 'CRM MANAGER');
         toast.success('Welcome back!', {
           description: 'Logged in as CRM MANAGER (demo mode)',
         });
-      } else if (data.username === 'crm_officer' && data.password === 'Crm2026!ews') {
+      } else if (data.email === 'crm_officer@cbe.com.et' && data.password === 'Crm2026!ews') {
         login('demo-token-crm-officer', 'Abebe Kebede', 'CRM OFFICER');
         toast.success('Welcome back!', {
           description: 'Logged in as CRM OFFICER (demo mode)',
@@ -75,17 +78,30 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1e1033] via-purple-900 to-[#1e1033]" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-fuchsia-500/20 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/15 rounded-full blur-[100px]" />
-      
+    <div
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+      style={{ fontFamily: "'Times New Roman', Times, serif" }}
+    >
+      {/* Background */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(135deg, #1a0a1e 0%, #3d1036 30%, #1a0a1e 60%, #2d0e28 100%)' }}
+      />
+      <div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px]"
+        style={{ background: 'rgba(196, 31, 168, 0.2)' }}
+      />
+      <div
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px]"
+        style={{ background: 'rgba(156, 21, 133, 0.15)' }}
+      />
+
       {/* Grid pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
           backgroundSize: '60px 60px',
         }}
       />
@@ -96,7 +112,7 @@ export default function Login() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className="relative z-10 w-full max-w-md"
       >
-        <Card className="glass-card border-white/10 shadow-2xl shadow-purple-900/40">
+        <Card className="glass-card border-white/10 shadow-2xl" style={{ boxShadow: '0 25px 50px rgba(196, 31, 168, 0.25)' }}>
           <CardHeader className="text-center pb-2 pt-8">
             {/* Logo */}
             <motion.div
@@ -106,13 +122,23 @@ export default function Login() {
               className="mx-auto"
             >
               <div className="h-40 w-56 flex items-center justify-center mx-auto mb-2">
-                <img src={cbeIcon} alt="CBE Logo" className="w-full h-full object-contain bg-transparent" />
+                <img
+                  src={cbeIcon}
+                  alt="CBE Logo"
+                  className="w-full h-full object-contain bg-transparent"
+                />
               </div>
             </motion.div>
-            <h1 className="text-3xl font-bold text-gray-900 tracking-wide">
+            <h1
+              className="text-3xl font-bold text-gray-900 tracking-wide"
+              style={{ fontFamily: "'Times New Roman', Times, serif" }}
+            >
               Commercial Bank of Ethiopia
             </h1>
-            <p className="text-xl text-purple-600 mt-1 font-bold">
+            <p
+              className="text-xl mt-1 font-bold"
+              style={{ color: '#c41fa8', fontFamily: "'Times New Roman', Times, serif" }}
+            >
               Early Warning System
             </p>
           </CardHeader>
@@ -120,22 +146,35 @@ export default function Login() {
           <CardContent className="px-8 pb-8 pt-4">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="username" className="text-gray-900 text-lg font-bold tracking-wide">
-                  Username
+                <Label
+                  htmlFor="email"
+                  className="text-gray-900 text-lg font-bold tracking-wide"
+                  style={{ fontFamily: "'Times New Roman', Times, serif" }}
+                >
+                  Email
                 </Label>
                 <Input
-                  id="username"
-                  placeholder="admin"
-                  {...register('username')}
-                  className="bg-white border-purple-100 text-gray-900 placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500/20 h-11"
+                  id="email"
+                  type="email"
+                  placeholder="admin@cbe.com.et"
+                  {...register('email')}
+                  className="bg-white text-gray-900 placeholder:text-gray-400 h-11"
+                  style={{
+                    borderColor: 'rgba(196, 31, 168, 0.2)',
+                    fontFamily: "'Times New Roman', Times, serif",
+                  }}
                 />
-                {errors.username && (
-                  <p className="text-xs text-red-400">{errors.username.message}</p>
+                {errors.email && (
+                  <p className="text-xs text-red-500">{errors.email.message}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-900 text-lg font-bold tracking-wide">
+                <Label
+                  htmlFor="password"
+                  className="text-gray-900 text-lg font-bold tracking-wide"
+                  style={{ fontFamily: "'Times New Roman', Times, serif" }}
+                >
                   Password
                 </Label>
                 <div className="relative">
@@ -144,25 +183,41 @@ export default function Login() {
                     type={showPassword ? 'text' : 'password'}
                     placeholder="password"
                     {...register('password')}
-                    className="bg-white border-purple-100 text-gray-900 placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500/20 h-11 pr-10"
+                    className="bg-white text-gray-900 placeholder:text-gray-400 h-11 pr-10"
+                    style={{
+                      borderColor: 'rgba(196, 31, 168, 0.2)',
+                      fontFamily: "'Times New Roman', Times, serif",
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors"
+                    style={{ color: undefined }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#c41fa8')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#9ca3af')}
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-xs text-red-400">{errors.password.message}</p>
+                  <p className="text-xs text-red-500">{errors.password.message}</p>
                 )}
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-11 bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-400 hover:to-fuchsia-500 text-white font-semibold shadow-lg shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/30"
+                className="w-full h-11 text-white font-semibold transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, #c41fa8 0%, #a61d94 100%)',
+                  boxShadow: '0 4px 14px rgba(196, 31, 168, 0.3)',
+                  fontFamily: "'Times New Roman', Times, serif",
+                }}
               >
                 {loading ? (
                   <motion.div
@@ -176,22 +231,31 @@ export default function Login() {
               </Button>
             </form>
 
-            <div className="text-center text-xs text-gray-500 mt-6 space-y-2">
+            {/* Demo credentials for all 4 roles */}
+            <div
+              className="text-center text-xs text-gray-500 mt-6 space-y-2"
+              style={{ fontFamily: "'Times New Roman', Times, serif" }}
+            >
+              <p className="font-semibold text-gray-600 mb-1">Demo Credentials</p>
               <p>
-                Use <span className="text-purple-300">admin</span> /{' '}
-                <span className="text-purple-300">password</span> for Admin
+                <span style={{ color: '#c41fa8' }}>admin@cbe.com.et</span> /{' '}
+                <span style={{ color: '#c41fa8' }}>password</span>{' '}
+                <span className="text-gray-400">— Admin</span>
               </p>
               <p>
-                Use <span className="text-purple-300">monitoring_manager</span> /{' '}
-                <span className="text-purple-300">Monitor2026!ews</span> for Monitoring
+                <span style={{ color: '#c41fa8' }}>monitoring@cbe.com.et</span> /{' '}
+                <span style={{ color: '#c41fa8' }}>Monitor2026!ews</span>{' '}
+                <span className="text-gray-400">— Monitoring</span>
               </p>
               <p>
-                Use <span className="text-purple-300">crm_manager</span> /{' '}
-                <span className="text-purple-300">password123</span> for CRM Manager
+                <span style={{ color: '#c41fa8' }}>crm_manager@cbe.com.et</span> /{' '}
+                <span style={{ color: '#c41fa8' }}>password123</span>{' '}
+                <span className="text-gray-400">— CRM Manager</span>
               </p>
               <p>
-                Use <span className="text-purple-300">crm_officer</span> /{' '}
-                <span className="text-purple-300">Crm2026!ews</span> for CRM Officer
+                <span style={{ color: '#c41fa8' }}>crm_officer@cbe.com.et</span> /{' '}
+                <span style={{ color: '#c41fa8' }}>Crm2026!ews</span>{' '}
+                <span className="text-gray-400">— CRM Officer</span>
               </p>
             </div>
           </CardContent>
